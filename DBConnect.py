@@ -2,6 +2,7 @@ from decouple import config as myconfig
 import psycopg2
 import pandas as pd
 class DBConnect:
+    #Подключение к БД
     def __init__(self, user=myconfig('PG_USER'),
                  password=myconfig('PG_PASSWORD'),
                  host=myconfig('PG_HOST'),
@@ -15,6 +16,7 @@ class DBConnect:
 
         self.connection.autocommit = True
 
+    #Функция выполняющая запрос и выводит результат в виде таблицы
     def selectUser (self):
         with self.connection.cursor() as cursor:
             cursor.execute("""with filtered_messages as (
@@ -67,6 +69,7 @@ group by  m.name_mop, r.rop_name
             df = pd.DataFrame(result, columns=columns)
             return df
 
-
-db=DBConnect().selectUser()
-print(db)
+#Вызов функции
+if __name__ == "__main__":
+    db=DBConnect().selectUser()
+    print(db)
